@@ -1,0 +1,16 @@
+# Bỏ qua tệp cơ sở dữ liệu SQLite (Không đẩy dữ liệu thực tế lên GitHub)
+*.db
+*.sqlite3
+
+# Bỏ qua bộ nhớ đệm cache của Python
+__pycache__/
+*.pyc
+
+# Bỏ qua môi trường ảo (Virtual Environment) nếu có
+venv/
+env/
+.env
+
+# Bỏ qua tệp cấu hình của IDE
+.vscode/
+.idea/

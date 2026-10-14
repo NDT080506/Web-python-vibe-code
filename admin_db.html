@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảng Quản Trị SQLite (Private)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        code { font-family: 'JetBrains Mono', monospace; }
+        body { background: #1c1917; color: #f5f5f4; padding: 32px 16px 80px 16px; }
+        .container { max-width: 980px; margin: 0 auto; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .btn-link {
+            color: #a8a29e; text-decoration: none; font-size: 0.9rem; font-weight: 600;
+            padding: 8px 16px; border-radius: 10px; background: #292524; border: 1px solid #44403c;
+            transition: all 0.2s;
+        }
+        .btn-link:hover { color: #f5f5f4; border-color: #78716c; }
+        .btn-logout { background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239, 68, 68, 0.3); }
+        .btn-logout:hover { background: #ef4444; color: #ffffff; }
+
+        .header-panel {
+            background: #292524;
+            border: 1px solid #44403c;
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+        .header-panel h1 { font-size: 1.45rem; font-weight: 800; color: #f59e0b; margin-bottom: 18px; }
+        .header-panel p { color: #a8a29e; font-size: 0.92rem; margin-bottom: 20px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+        .stat-card { background: rgba(255, 255, 255, 0.03); border: 1px solid #44403c; border-radius: 12px; padding: 14px 18px; }
+        .stat-card .label { font-size: 0.72rem; color: #a8a29e; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-bottom: 4px; }
+        .stat-card .val { font-size: 0.95rem; font-weight: 700; color: #f59e0b; }
+
+        .section-box {
+            background: #292524;
+            border: 1px solid #44403c;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .section-title { font-size: 1.15rem; font-weight: 800; color: #ffffff; margin-bottom: 16px; }
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left; }
+        th { background: #1c1917; color: #a8a29e; padding: 12px 16px; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 2px solid #44403c; }
+        td { padding: 12px 16px; border-bottom: 1px solid #44403c; color: #d6d3d1; }
+        tr:hover td { background: rgba(255, 255, 255, 0.02); }
+        .badge-type { background: rgba(245, 158, 11, 0.15); color: #f59e0b; padding: 3px 8px; border-radius: 6px; font-size: 0.76rem; }
+        .badge-pk { background: rgba(217, 119, 6, 0.25); color: #fbbf24; padding: 3px 8px; border-radius: 6px; font-size: 0.74rem; font-weight: 700; }
+        .btn-delete-row {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-delete-row:hover {
+            background: #ef4444;
+            color: #ffffff;
+            border-color: #ef4444;
+        }
+        .toast-admin {
+            padding: 12px 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        /* Thanh tìm kiếm theo ID */
+        .search-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 14px 18px;
+            border-radius: 14px;
+            border: 1px solid #44403c;
+        }
+        .search-form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            max-width: 480px;
+        }
+        .search-input-box {
+            position: relative;
+            flex: 1;
+        }
+        .search-input-box input {
+            width: 100%;
+            background: #1c1917;
+            border: 1.5px solid #57534e;
+            border-radius: 10px;
+            padding: 10px 14px 10px 38px;
+            color: #ffffff;
+            font-size: 0.92rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input-box input:focus {
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+        }
+        .search-icon-svg {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a8a29e;
+            pointer-events: none;
+        }
+        .btn-search {
+            background: #d97706;
+            color: #ffffff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+        .btn-search:hover { background: #b45309; }
+        .btn-reset-filter {
+            background: #44403c;
+            color: #d6d3d1;
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 0.86rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .btn-reset-filter:hover { background: #57534e; color: #ffffff; }
+        .search-hint {
+            font-size: 0.82rem;
+            color: #a8a29e;
+        }
+        .no-result-msg {
+            text-align: center;
+            padding: 28px;
+            color: #f87171;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-bar">
+            <a href="{{ url_for('index') }}" class="btn-link">← Về trang Sổ Lưu Bút</a>
+            <a href="{{ url_for('admin_database', action='logout') }}" class="btn-link btn-logout">🔒 Khóa & Đăng Xuất</a>
+        </div>
+
+        {# Flash messages trong trang admin #}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="toast-admin">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="header-panel">
+            <h1>🛡️ Quản Trị Cơ Sở Dữ Liệu SQLite</h1>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="label">Kích thước tệp</div>
+                    <div class="val">{{ (file_size_bytes / 1024)|round(2) }} KB</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Tổng số bản ghi</div>
+                    <div class="val">{{ total_records }} dòng</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Schema -->
+        <div class="section-box">
+            <div class="section-title">1. Cấu trúc bảng 'entries' (Schema)</div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>CID</th>
+                            <th>Tên Cột</th>
+                            <th>Kiểu dữ liệu</th>
+                            <th>Not Null</th>
+                            <th>Khóa chính</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for col in schema %}
+                            <tr>
+                                <td><code>{{ col[0] }}</code></td>
+                                <td><strong>{{ col[1] }}</strong></td>
+                                <td><span class="badge-type">{{ col[2] }}</span></td>
+                                <td>{{ "Có" if col[3] else "Không" }}</td>
+                                <td>{{ "PRIMARY KEY" if col[5] else "-" }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Raw Records kèm tính năng Tìm kiếm ID & Xóa -->
+        <div class="section-box">
+            <div class="section-title">2. Quản Trị & Xóa Bản Ghi SQLite</div>
+
+            <!-- Thanh tìm kiếm bản ghi theo ID -->
+            <div class="search-container">
+                <form method="GET" action="{{ url_for('admin_database') }}" class="search-form">
+                    <div class="search-input-box">
+                        <svg class="search-icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input 
+                            type="number" 
+                            id="searchIdInput" 
+                            name="search_id" 
+                            placeholder="Nhập ID bản ghi (ví dụ: 1, 26, 34...)" 
+                            value="{{ search_id|default('') }}"
+                            oninput="filterRowsInstant(this.value)"
+                            autocomplete="off"
+                        >
+                    </div>
+                    <button type="submit" class="btn-search">Tìm ID</button>
+                    {% if search_id %}
+                        <a href="{{ url_for('admin_database') }}" class="btn-reset-filter">Xem tất cả</a>
+                    {% endif %}
+                </form>
+                <div class="search-hint">💡 Nhập số ID để lọc ngay lập tức và bấm xóa nhanh.</div>
+            </div>
+
+            {% if entries %}
+                <div class="table-responsive">
+                    <table id="recordsTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 70px;">ID</th>
+                                <th style="width: 170px;">Tác giả</th>
+                                <th>Nội dung lời nhắn</th>
+                                <th style="width: 180px;">Thời gian tạo</th>
+                                <th style="width: 110px; text-align: center;">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recordsTbody">
+                            {% for row in entries %}
+                                <tr class="record-row" data-id="{{ row.id }}">
+                                    <td><code>#{{ row.id }}</code></td>
+                                    <td><strong style="color: #ffffff;">{{ row.name }}</strong></td>
+                                    <td style="white-space: pre-wrap;">{{ row.message }}</td>
+                                    <td style="color: #a8a29e; font-size: 0.85rem;">{{ format_time(row.created_at) }}</td>
+                                    <td style="text-align: center;">
+                                        <form action="{{ url_for('admin_delete_entry', entry_id=row.id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa vĩnh viễn bản ghi #{{ row.id }} của \'{{ row.name }}\' khỏi SQLite?');">
+                                            <button type="submit" class="btn-delete-row">🗑️ Xóa</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div id="noMatchMsg" class="no-result-msg">
+                    Không tìm thấy bản ghi nào khớp với ID bạn vừa nhập.
+                </div>
+            {% else %}
+                <p style="color: #a8a29e; text-align: center; padding: 24px;">
+                    {% if search_id %}
+                        Không tìm thấy bản ghi nào có ID #{{ search_id }}. <a href="{{ url_for('admin_database') }}" style="color: #f59e0b; margin-left: 8px;">Quay lại xem tất cả</a>
+                    {% else %}
+                        Hiện tại chưa có bản ghi nào trong cơ sở dữ liệu.
+                    {% endif %}
+                </p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Script lọc tức thì theo ID khi người dùng gõ phím -->
+    <script>
+        function filterRowsInstant(query) {
+            const cleanQuery = query.trim();
+            const rows = document.querySelectorAll('.record-row');
+            const noMatch = document.getElementById('noMatchMsg');
+            let matchedCount = 0;
+
+            if (!rows || rows.length === 0) return;
+
+            rows.forEach(row => {
+                const rowId = row.getAttribute('data-id');
+                // Nếu ô tìm kiếm rỗng hoặc ID của dòng trùng với query
+                if (cleanQuery === '' || rowId === cleanQuery || rowId.includes(cleanQuery)) {
+                    row.style.display = '';
+                    matchedCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            if (noMatch) {
+                noMatch.style.display = (matchedCount === 0 && cleanQuery !== '') ? 'block' : 'none';
+            }
+        }
+    </script>
+</body>
+</html>

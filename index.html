@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sổ Lưu Bút Kỷ Niệm ✨ Guestbook Studio</title>
+    <!-- Google Font Plus Jakarta Sans cực kỳ hiện đại -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink-neon: #ff007a;
+            --orange-sunset: #ff5e36;
+            --purple-electric: #7928ca;
+            --yellow-gold: #f5af19;
+            --rose-ruby: #e11d48;
+            --sunset-gradient: linear-gradient(135deg, #ff007a 0%, #ff5e36 45%, #7928ca 100%);
+            --btn-gradient: linear-gradient(135deg, #ff007a 0%, #ff5e36 50%, #f5af19 100%);
+            --btn-hover: linear-gradient(135deg, #e11d48 0%, #ff007a 50%, #7928ca 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Nền Sunset Aura siêu rực rỡ (Không có màu xanh) */
+        body {
+            background-color: #fff1f5;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(255, 0, 122, 0.28) 0px, transparent 55%),
+                radial-gradient(at 100% 0%, rgba(121, 40, 202, 0.28) 0px, transparent 55%),
+                radial-gradient(at 100% 100%, rgba(255, 94, 54, 0.3) 0px, transparent 55%),
+                radial-gradient(at 0% 100%, rgba(245, 175, 25, 0.25) 0px, transparent 55%),
+                radial-gradient(at 50% 50%, rgba(255, 0, 122, 0.15) 0px, transparent 65%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #0f172a;
+            line-height: 1.65;
+            padding: 36px 16px 80px 16px;
+        }
+
+        .wrapper {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        /* Navbar rực rỡ, chỉ có logo và nút viết lời nhắn (Không có dấu vết Database) */
+        .navbar {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 2px solid rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 15px 35px -10px rgba(255, 0, 122, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+            margin-bottom: 28px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            color: #0f172a;
+        }
+
+        .brand-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 16px;
+            background: var(--sunset-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 8px 20px rgba(255, 0, 122, 0.45);
+            animation: pulseAura 3s ease-in-out infinite;
+        }
+
+        @keyframes pulseAura {
+            0%, 100% { transform: scale(1); box-shadow: 0 8px 20px rgba(255, 0, 122, 0.45); }
+            50% { transform: scale(1.05); box-shadow: 0 10px 28px rgba(255, 94, 54, 0.65); }
+        }
+
+        .brand-title {
+            font-weight: 900;
+            font-size: 1.3rem;
+            letter-spacing: -0.02em;
+            background: var(--sunset-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-subtitle {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #be185d;
+            letter-spacing: 0.02em;
+        }
+
+        /* Nút viết lời nhắn Glow rực lửa */
+        .btn-write {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--btn-gradient);
+            background-size: 150% auto;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 22px;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            box-shadow: 0 10px 24px -4px rgba(255, 0, 122, 0.5);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-write:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 16px 32px -4px rgba(255, 94, 54, 0.65);
+        }
+
+        /* Hero Banner đa sắc */
+        .hero {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.95);
+            border-radius: 28px;
+            padding: 32px 30px;
+            margin-bottom: 26px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 20px 40px -12px rgba(255, 0, 122, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #ff007a, #ff5e36, #f5af19, #e11d48, #7928ca, #ff007a);
+            background-size: 200% auto;
+            animation: rainbowFlow 4s linear infinite;
+        }
+
+        @keyframes rainbowFlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        .hero-text h1 {
+            font-size: 1.7rem;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            background: var(--sunset-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+        }
+
+        .hero-text p {
+            color: #52525b;
+            font-size: 0.96rem;
+            font-weight: 600;
+        }
+
+        .hero-badge {
+            background: linear-gradient(135deg, #fff1f2, #fdf2f8);
+            border: 2px solid #fbcfe8;
+            padding: 12px 20px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 8px 18px rgba(255, 0, 122, 0.12);
+        }
+
+        .hero-badge .number {
+            font-size: 1.65rem;
+            font-weight: 900;
+            background: var(--sunset-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-badge .label {
+            font-size: 0.74rem;
+            font-weight: 800;
+            color: #be185d;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Toast thông báo */
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 22px;
+            border-radius: 18px;
+            font-size: 0.96rem;
+            font-weight: 700;
+            margin-bottom: 22px;
+            box-shadow: 0 10px 25px rgba(255, 0, 122, 0.12);
+            animation: slideDown 0.3s ease;
+        }
+
+        .toast-success {
+            background: linear-gradient(135deg, #fff1f2, #ffe4e6);
+            color: #9f1239;
+            border: 2px solid #fca5a5;
+        }
+
+        .toast-warning {
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+            color: #92400e;
+            border: 2px solid #fde68a;
+        }
+
+        .toast-info {
+            background: linear-gradient(135deg, #fdf2f8, #fce7f3);
+            color: #831843;
+            border: 2px solid #fbcfe8;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Danh sách thẻ lời nhắn (Entry Cards) Candy Pop */
+        .entry-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .entry-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 26px;
+            padding: 26px;
+            box-shadow: 0 12px 30px -8px rgba(255, 0, 122, 0.12), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.95);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .entry-card:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 22px 42px -10px rgba(255, 0, 122, 0.25), 0 8px 16px -6px rgba(255, 94, 54, 0.15);
+            border-color: #fbcfe8;
+        }
+
+        .card-accent-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+        }
+
+        .entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .author-group {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-weight: 900;
+            font-size: 1.15rem;
+            box-shadow: 0 8px 20px rgba(255, 0, 122, 0.35);
+            flex-shrink: 0;
+        }
+
+        .author-info h3 {
+            font-size: 1.12rem;
+            font-weight: 800;
+            color: #1e1b4b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge-id {
+            background: linear-gradient(135deg, #fff1f2, #fdf2f8);
+            color: #be185d;
+            font-size: 0.74rem;
+            font-weight: 900;
+            padding: 3px 9px;
+            border-radius: 10px;
+            border: 1.5px solid #fbcfe8;
+        }
+
+        .entry-time {
+            font-size: 0.82rem;
+            color: #881337;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 3px;
+        }
+
+        .entry-message {
+            font-size: 1.05rem;
+            color: #334155;
+            line-height: 1.75;
+            white-space: pre-wrap;
+            word-break: break-word;
+            padding: 6px 0 18px 0;
+            border-bottom: 2px dashed #fce7f3;
+        }
+
+        .entry-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 14px;
+        }
+
+        .sweet-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: #be185d;
+            background: #fff1f2;
+            padding: 5px 12px;
+            border-radius: 12px;
+            border: 1.5px solid #fbcfe8;
+        }
+
+        .btn-delete {
+            background: #fff1f2;
+            color: #e11d48;
+            border: 1.5px solid #fecdd3;
+            padding: 7px 16px;
+            border-radius: 12px;
+            font-size: 0.86rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-delete:hover {
+            background: #e11d48;
+            color: #ffffff;
+            border-color: #e11d48;
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(225, 29, 72, 0.4);
+        }
+
+        /* Empty State */
+        .empty-box {
+            background: rgba(255, 255, 255, 0.92);
+            border: 2px dashed #ff007a;
+            border-radius: 28px;
+            padding: 60px 24px;
+            text-align: center;
+            backdrop-filter: blur(16px);
+        }
+
+        .empty-icon {
+            font-size: 3.8rem;
+            margin-bottom: 16px;
+            display: inline-block;
+            animation: floatSlow 3s ease-in-out infinite;
+        }
+
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .empty-box h3 {
+            font-size: 1.45rem;
+            font-weight: 900;
+            color: #1e1b4b;
+            margin-bottom: 8px;
+        }
+
+        .empty-box p {
+            color: #52525b;
+            font-size: 0.98rem;
+            font-weight: 600;
+            max-width: 440px;
+            margin: 0 auto 26px auto;
+        }
+
+        /* Modal xác nhận xóa */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 28px;
+            width: 90%;
+            max-width: 420px;
+            padding: 32px 28px;
+            box-shadow: 0 30px 60px -12px rgba(255, 0, 122, 0.35);
+            text-align: center;
+            border: 2.5px solid #fbcfe8;
+            animation: modalPop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 20px;
+            background: #ffe4e6;
+            color: #e11d48;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px auto;
+        }
+
+        .modal-card h3 {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .modal-card p {
+            font-size: 0.94rem;
+            color: #52525b;
+            margin-bottom: 26px;
+            line-height: 1.5;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-modal-cancel {
+            background: #f4f4f5;
+            color: #3f3f46;
+            padding: 13px;
+            border-radius: 14px;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .btn-modal-confirm {
+            background: linear-gradient(135deg, #e11d48, #ff007a);
+            color: #ffffff;
+            padding: 13px;
+            border-radius: 14px;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            flex: 1;
+            box-shadow: 0 6px 18px rgba(225, 29, 72, 0.45);
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Navbar rực rỡ (Không có nút Database) -->
+        <nav class="navbar">
+            <a href="{{ url_for('index') }}" class="brand">
+                <div class="brand-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <div class="brand-title">Guestbook Studio</div>
+                    <div class="brand-subtitle">Sổ Lưu Bút Kỷ Niệm 🌸✨</div>
+                </div>
+            </a>
+            <div>
+                <a href="{{ url_for('add_entry') }}" class="btn-write">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <span>Viết lời nhắn</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Banner Hero Rực Lửa Sunset -->
+        <div class="hero">
+            <div class="hero-text">
+                <h1>Gửi Trọn Yêu Thương 💖</h1>
+                <p>Nơi lưu giữ những kỷ niệm, tâm tình và lời chúc rực rỡ nhất.</p>
+            </div>
+            <div class="hero-badge">
+                <div class="number">{{ total_entries }}</div>
+                <div class="label">Lời nhắn</div>
+            </div>
+        </div>
+
+        <!-- Thông báo Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="toast toast-{{ category }}">
+                        <span>{{ message }}</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Danh sách lời nhắn -->
+        {% if entries %}
+            <div class="entry-list">
+                {% for entry in entries %}
+                    {% set initials, avatar_bg, accent_color = get_avatar_info(entry.name) %}
+                    <div class="entry-card">
+                        <div class="card-accent-bar" style="background: {{ avatar_bg }};"></div>
+
+                        <div class="entry-header">
+                            <div class="author-group">
+                                <div class="avatar" style="background: {{ avatar_bg }};">
+                                    {{ initials }}
+                                </div>
+                                <div class="author-info">
+                                    <h3>
+                                        <span>{{ entry.name }}</span>
+                                        <span class="badge-id">#{{ entry.id }}</span>
+                                    </h3>
+                                    <div class="entry-time">
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                        </svg>
+                                        <span>{{ format_time(entry.created_at) }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="entry-message">{{ entry.message }}</div>
+
+                        <div class="entry-footer">
+                            <span class="sweet-tag">💌 Lời gửi gắm</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-box">
+                <div class="empty-icon">🌈✨</div>
+                <h3>Chưa có lời nhắn nào</h3>
+                <p>Hãy là người đầu tiên đặt bút viết những dòng yêu thương vào sổ lưu bút này nhé!</p>
+                <a href="{{ url_for('add_entry') }}" class="btn-write">
+                    <span>✨ Để lại lời nhắn đầu tiên</span>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

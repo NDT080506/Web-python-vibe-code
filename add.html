@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viết Lời Nhắn Mới ✨ Sổ Lưu Bút Rực Rỡ</title>
+    <!-- Google Font Plus Jakarta Sans cực kỳ hiện đại -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Bảng màu Neon Sunset & Dopamine rực rỡ (TUYỆT ĐỐI KHÔNG CÓ MÀU XANH) */
+            --pink-neon: #ff007a;
+            --orange-sunset: #ff5e36;
+            --purple-electric: #7928ca;
+            --yellow-gold: #f5af19;
+            --rose-ruby: #e11d48;
+            --sunset-gradient: linear-gradient(135deg, #ff007a 0%, #ff5e36 45%, #7928ca 100%);
+            --btn-gradient: linear-gradient(135deg, #ff007a 0%, #ff5e36 50%, #f5af19 100%);
+            --btn-hover: linear-gradient(135deg, #e11d48 0%, #ff007a 50%, #7928ca 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Nền Sunset Aura siêu rực rỡ và lộng lẫy */
+        body {
+            background-color: #fff1f5;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(255, 0, 122, 0.28) 0px, transparent 55%),
+                radial-gradient(at 100% 0%, rgba(121, 40, 202, 0.28) 0px, transparent 55%),
+                radial-gradient(at 100% 100%, rgba(255, 94, 54, 0.3) 0px, transparent 55%),
+                radial-gradient(at 0% 100%, rgba(245, 175, 25, 0.25) 0px, transparent 55%),
+                radial-gradient(at 50% 50%, rgba(255, 0, 122, 0.15) 0px, transparent 65%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 16px;
+        }
+
+        /* Thẻ Form Candy Glassmorphism cao cấp */
+        .form-card {
+            width: 100%;
+            max-width: 640px;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 32px;
+            border: 2px solid rgba(255, 255, 255, 0.95);
+            box-shadow: 
+                0 30px 60px -15px rgba(255, 0, 122, 0.25),
+                0 15px 30px -10px rgba(255, 94, 54, 0.2),
+                inset 0 1px 2px rgba(255, 255, 255, 0.9);
+            padding: 40px 36px;
+            position: relative;
+            overflow: hidden;
+            animation: cardAppear 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes cardAppear {
+            from { opacity: 0; transform: translateY(20px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Dải viền phát sáng 5 màu trên đỉnh */
+        .form-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #ff007a, #ff5e36, #f5af19, #e11d48, #7928ca, #ff007a);
+            background-size: 200% auto;
+            animation: rainbowFlow 4s linear infinite;
+        }
+
+        @keyframes rainbowFlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        /* Nút quay lại trang chủ */
+        .back-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #71717a;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding: 8px 14px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #fecdd3;
+            transition: all 0.25s ease;
+        }
+
+        .back-nav:hover {
+            color: var(--pink-neon);
+            border-color: var(--pink-neon);
+            transform: translateX(-3px);
+            background: #fff1f2;
+        }
+
+        /* Tiêu đề rực lửa */
+        .header-box {
+            margin-bottom: 26px;
+        }
+
+        .header-box h1 {
+            font-size: 1.85rem;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            background: var(--sunset-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-box p {
+            color: #52525b;
+            font-size: 0.96rem;
+            font-weight: 500;
+        }
+
+        /* Thông báo lỗi */
+        .alert-error {
+            background: linear-gradient(135deg, #fff1f2, #ffe4e6);
+            border: 2px solid #fca5a5;
+            color: #b91c1c;
+            padding: 14px 18px;
+            border-radius: 16px;
+            font-size: 0.94rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.15);
+        }
+
+        /* Gợi ý tâm trạng (Vibe Quick Tags) */
+        .vibe-section {
+            margin-bottom: 22px;
+        }
+
+        .vibe-title {
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #9f1239;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .vibe-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .vibe-btn {
+            background: #ffffff;
+            border: 1.5px solid #fecdd3;
+            color: #4b5563;
+            padding: 7px 14px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .vibe-btn:hover {
+            transform: translateY(-2px) scale(1.04);
+            border-color: var(--pink-neon);
+            color: var(--pink-neon);
+            box-shadow: 0 6px 14px rgba(255, 0, 122, 0.25);
+            background: #fff5f7;
+        }
+
+        /* Form nhóm input */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.96rem;
+            font-weight: 800;
+            color: #1e1b4b;
+            margin-bottom: 10px;
+        }
+
+        .counter-badge {
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: #be185d;
+            background: #fdf2f8;
+            padding: 3px 10px;
+            border-radius: 8px;
+            border: 1px solid #fbcfe8;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            background: #ffffff;
+            border: 2px solid #ffd1dc;
+            border-radius: 18px;
+            padding: 15px 20px;
+            font-size: 1.02rem;
+            color: #1e1b4b;
+            outline: none;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            background: #ffffff;
+            border-color: var(--pink-neon);
+            box-shadow: 0 0 0 5px rgba(255, 0, 122, 0.22);
+            transform: translateY(-1px);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 150px;
+            line-height: 1.65;
+        }
+
+        /* Nút hành động Submit đa sắc */
+        .actions {
+            display: flex;
+            gap: 14px;
+            margin-top: 32px;
+        }
+
+        .btn-submit {
+            flex: 2;
+            background: var(--btn-gradient);
+            background-size: 150% auto;
+            color: #ffffff;
+            border: none;
+            padding: 16px 28px;
+            border-radius: 18px;
+            font-size: 1.08rem;
+            font-weight: 900;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 14px 28px -4px rgba(255, 0, 122, 0.45);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-submit:hover {
+            background-position: right center;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 20px 36px -4px rgba(255, 0, 122, 0.6);
+        }
+
+        .btn-cancel {
+            flex: 1;
+            background: #f4f4f5;
+            color: #3f3f46;
+            text-decoration: none;
+            padding: 16px 20px;
+            border-radius: 18px;
+            font-size: 1rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            border: 1.5px solid #e4e4e7;
+        }
+
+        .btn-cancel:hover {
+            background: #e4e4e7;
+            color: #18181b;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-card">
+        <a href="{{ url_for('index') }}" class="back-nav">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Quay lại Sổ Lưu Bút</span>
+        </a>
+
+        <div class="header-box">
+            <h1>
+                <span>Gửi Gắm Kỷ Niệm</span>
+                <span>✍️✨</span>
+            </h1>
+            <p>Viết nên những dòng tâm sự, lời chúc rực rỡ và chân thành nhất.</p>
+        </div>
+
+        {# Hiển thị lỗi nếu validate thất bại #}
+        {% if error %}
+            <div class="alert-error">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <span>{{ error }}</span>
+            </div>
+        {% endif %}
+
+        <!-- Chọn Vibe Nhanh Để Tự Điền -->
+        <div class="vibe-section">
+            <div class="vibe-title">✨ Chọn cảm xúc nhanh (Gợi ý lời chúc):</div>
+            <div class="vibe-tags">
+                <button type="button" class="vibe-btn" onclick="insertVibe('💖 Chúc bạn luôn vui vẻ, hạnh phúc và tràn đầy năng lượng tích cực!')">💖 Yêu thương</button>
+                <button type="button" class="vibe-btn" onclick="insertVibe('🌟 Chúc dự án ngày càng phát triển rực rỡ và gặt hái nhiều thành công!')">🌟 Thành công</button>
+                <button type="button" class="vibe-btn" onclick="insertVibe('🎉 Khai trương hồng phát! Chúc mọi sự hanh thông và thuận buồm xuôi gió!')">🎉 Chúc mừng</button>
+                <button type="button" class="vibe-btn" onclick="insertVibe('☕ Ghé thăm sổ lưu bút để lại một kỷ niệm thật đẹp và đáng nhớ!')">☕ Kỷ niệm</button>
+            </div>
+        </div>
+
+        <form action="{{ url_for('add_entry') }}" method="POST">
+            <div class="form-group">
+                <label for="name">
+                    <span>👤 Tên của bạn hoặc Biệt danh *</span>
+                </label>
+                <input 
+                    type="text" 
+                    id="name" 
+                    name="name" 
+                    placeholder="Ví dụ: Hoàng Long, Quỳnh Anh, Thảo Vy..." 
+                    value="{{ name|default('') }}"
+                    autocomplete="off"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="message">
+                    <span>💌 Nội dung lời nhắn *</span>
+                    <span id="charCount" class="counter-badge">0 ký tự</span>
+                </label>
+                <textarea 
+                    id="message" 
+                    name="message" 
+                    placeholder="Hãy viết những dòng chữ chân thành, lời chúc tốt đẹp hoặc câu chuyện nhỏ của bạn vào đây nhé..."
+                    required
+                    oninput="updateCounter(this)"
+                >{{ message|default('') }}</textarea>
+            </div>
+
+            <div class="actions">
+                <a href="{{ url_for('index') }}" class="btn-cancel">Hủy</a>
+                <button type="submit" class="btn-submit">
+                    <span>🚀 Đăng Lời Nhắn Ngay</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function updateCounter(el) {
+            const counter = document.getElementById('charCount');
+            counter.textContent = `${el.value.length} ký tự`;
+        }
+
+        function insertVibe(text) {
+            const msgArea = document.getElementById('message');
+            if (msgArea.value.trim() === '') {
+                msgArea.value = text;
+            } else {
+                msgArea.value += '\n' + text;
+            }
+            msgArea.focus();
+            updateCounter(msgArea);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const textarea = document.getElementById('message');
+            if (textarea) updateCounter(textarea);
+        });
+    </script>
+</body>
+</html>
