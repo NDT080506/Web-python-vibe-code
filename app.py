@@ -1,8 +1,10 @@
 """
-Ứng dụng Guestbook (Sổ lưu bút) - Phiên bản Phân Quyền Admin & Client.
-Quy định quyền:
-  - Phía Client: Chỉ được xem và viết lời nhắn (KHÔNG CÓ NÚT XÓA).
-  - Phía Admin: Độc quyền xóa các bản ghi trong trang quản trị /admin/db (Bảo vệ bằng mã PIN 8888).
+Ứng dụng Guestbook (Sổ lưu bút) - Phiên bản BẢNG GHIM KỶ NIỆM (Corkboard & Sticky Notes).
+Lấy cảm hứng từ bảng gỗ bần ghim các tấm note kỷ niệm phong cách hoài niệm, ấm áp.
+Chức năng:
+  - Client: Xem bảng note ghim, di chuột vào để bung nội dung và thu nhỏ khi rê ra ngoài.
+  - Viết note: Tờ giấy ghi chú dán lên bảng bần.
+  - Admin: Quản trị riêng tư bằng mã PIN 8888, độc quyền xóa.
 """
 
 import os
@@ -29,7 +31,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATABASE_PATH = os.path.join(BASE_DIR, "guestbook.db")
 
 app = Flask(__name__, template_folder=BASE_DIR)
-app.secret_key = "guestbook_admin_protected_secret_key_2026"
+app.secret_key = "guestbook_corkboard_pinboard_key_2026"
 
 # Mã PIN bảo mật trang quản trị Database
 ADMIN_SECRET_PIN = "8888"
@@ -38,7 +40,8 @@ ADMIN_SECRET_PIN = "8888"
 def get_db() -> sqlite3.Connection:
     """Lấy kết nối SQLite cho request hiện tại thông qua đối tượng 'g'."""
     if "db" not in g:
-        g.db = sqlite3.connect(DATABASE_PATH)
+        db_path = app.config.get("DATABASE", DATABASE_PATH)
+        g.db = sqlite3.connect(db_path)
         g.db.row_factory = sqlite3.Row
     return g.db
 
@@ -68,33 +71,28 @@ def init_db():
         db.commit()
 
 
-# Bảng màu Gradient Rực Rỡ Bắt Mắt (Không có màu xanh)
-AVATAR_GRADIENTS = [
-    "linear-gradient(135deg, #ff007a 0%, #ff5e36 100%)",  # Neon Pink to Sunset Orange
-    "linear-gradient(135deg, #7928ca 0%, #ff0080 100%)",  # Electric Violet to Hot Magenta
-    "linear-gradient(135deg, #ff4b1f 0%, #ff9068 100%)",  # Fiery Coral to Peach
-    "linear-gradient(135deg, #f12711 0%, #f5af19 100%)",  # Flame Red to Electric Mango
-    "linear-gradient(135deg, #8a2387 0%, #e94057 50%, #f27121 100%)",  # Poly Sunset Trio
-    "linear-gradient(135deg, #b000b5 0%, #ff3366 100%)",  # Deep Purple to Neon Raspberry
-    "linear-gradient(135deg, #ff0844 0%, #ffb199 100%)",  # Cherry Blossom Pop
+# Danh sách các kiểu giấy Note Pastel, Đinh Ghim (Pushpin) và hoa văn giấy đa dạng như trong ảnh
+NOTE_PALETTES = [
+    {"bg": "#fffde7", "border": "#fff59d", "pin": "#e53935", "tape": "rgba(255, 235, 59, 0.5)", "pattern": "blank"},   # Vàng bơ cổ điển
+    {"bg": "#fce4ec", "border": "#f8bbd0", "pin": "#d81b60", "tape": "rgba(240, 98, 146, 0.4)", "pattern": "blank"},   # Hồng phấn kỷ niệm
+    {"bg": "#fff3e0", "border": "#ffe0b2", "pin": "#fb8c00", "tape": "rgba(255, 183, 77, 0.4)", "pattern": "lined"},   # Cam đào có dòng kẻ
+    {"bg": "#f3e5f5", "border": "#e1bee7", "pin": "#8e24aa", "tape": "rgba(186, 104, 200, 0.4)", "pattern": "blank"},  # Tím oải hương
+    {"bg": "#e8f5e9", "border": "#c8e6c9", "pin": "#2e7d32", "tape": "rgba(129, 199, 132, 0.4)", "pattern": "grid"},   # Xanh mint kẻ ô
+    {"bg": "#fefae0", "border": "#faedcd", "pin": "#c2410c", "tape": "rgba(212, 163, 115, 0.4)", "pattern": "lined"},  # Giấy mộc vintage
+    {"bg": "#ffffff", "border": "#ece7de", "pin": "#e11d48", "tape": "rgba(203, 213, 225, 0.5)", "pattern": "polaroid"},# Trắng kem Polaroid
+    {"bg": "#e0f2fe", "border": "#bae6fd", "pin": "#0284c7", "tape": "rgba(56, 189, 248, 0.4)", "pattern": "blank"},   # Xanh pastel dịu mát
 ]
 
-ACCENT_COLORS = ["#ff007a", "#ff5e36", "#7928ca", "#f5af19", "#e94057", "#ff3366"]
+# Góc xoay ngẫu nhiên tự nhiên như ghim tay trên bảng thật
+ROTATION_ANGLES = [-2.8, 2.2, -1.6, 3.1, -2.1, 1.8, -3.4, 2.7, -1.2, 3.5, -2.5, 2.0]
 
 
-def get_avatar_info(name: str):
-    """Tạo chữ cái đầu và gán màu gradient rực rỡ bắt mắt theo tên tác giả."""
-    clean_name = name.strip() if name else "?"
-    words = clean_name.split()
-    if len(words) >= 2:
-        initials = (words[0][0] + words[-1][0]).upper()
-    else:
-        initials = clean_name[:2].upper()
-
-    hash_val = sum(ord(c) for c in clean_name)
-    color_gradient = AVATAR_GRADIENTS[hash_val % len(AVATAR_GRADIENTS)]
-    accent = ACCENT_COLORS[hash_val % len(ACCENT_COLORS)]
-    return initials, color_gradient, accent
+def get_note_style(entry_id: int):
+    """Lấy kiểu màu giấy note, màu đinh ghim và góc xoay cố định theo ID."""
+    idx = int(entry_id) if entry_id else 0
+    palette = NOTE_PALETTES[idx % len(NOTE_PALETTES)]
+    rotation = ROTATION_ANGLES[idx % len(ROTATION_ANGLES)]
+    return palette, rotation
 
 
 def format_time_display(dt_str: str) -> str:
@@ -114,18 +112,18 @@ def format_time_display(dt_str: str) -> str:
 @app.context_processor
 def utility_processor():
     return {
-        "get_avatar_info": get_avatar_info,
+        "get_note_style": get_note_style,
         "format_time": format_time_display,
     }
 
 
 # =====================================================================
-# PHÍA CLIENT: CÔNG KHAI CHỈ ĐƯỢC XEM VÀ VIẾT (KHÔNG ĐƯỢC XÓA)
+# PHÍA CLIENT: BẢNG GHIM GỖ BẦN HIỂN THỊ CÁC TỜ NOTE KỶ NIỆM
 # =====================================================================
 
 @app.route("/", methods=["GET"])
 def index():
-    """Trang chủ: Client chỉ xem danh sách các lời nhắn và nút viết lời nhắn."""
+    """Trang chủ: Bảng ghim bần (Corkboard) chứa toàn bộ các tờ note."""
     db = get_db()
     entries = db.execute(
         """
@@ -139,7 +137,7 @@ def index():
 
 @app.route("/add", methods=["GET", "POST"])
 def add_entry():
-    """Route Thêm lời nhắn: Dành cho mọi khách ghé thăm."""
+    """Route Viết lời nhắn mới: Trình bày dạng tờ giấy note đặt trên bàn gỗ."""
     if request.method == "POST":
         name = request.form.get("name", "").strip()
         message = request.form.get("message", "").strip()
@@ -148,7 +146,6 @@ def add_entry():
             error = "Vui lòng nhập đầy đủ cả tên và nội dung lời nhắn (không được để trống)!"
             return render_template("add.html", error=error, name=name, message=message)
 
-        # Lấy giờ thực tế hiện tại của hệ thống (Local Time / GMT+7)
         current_local_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         db = get_db()
@@ -161,7 +158,7 @@ def add_entry():
         )
         db.commit()
 
-        flash("✨ Lời nhắn của bạn đã được đăng thành công vào sổ lưu bút!", "success")
+        flash("📌 Đã ghim thành công lời nhắn của bạn lên bảng kỷ niệm!", "success")
         return redirect(url_for("index"))
 
     return render_template("add.html", error=None, name="", message="")
@@ -177,7 +174,6 @@ def delete_entry(entry_id: int):
         flash("⛔ Quyền bị từ chối: Chỉ quản trị viên (Admin) mới có quyền xóa các bản ghi!", "warning")
         return redirect(url_for("index"))
 
-    # Nếu admin đã đăng nhập thì thực hiện xóa
     db = get_db()
     cursor = db.execute("SELECT id FROM entries WHERE id = ?", (entry_id,))
     entry = cursor.fetchone()
@@ -187,13 +183,13 @@ def delete_entry(entry_id: int):
     else:
         db.execute("DELETE FROM entries WHERE id = ?", (entry_id,))
         db.commit()
-        flash(f"Đã xóa thành công lời nhắn #{entry_id} khỏi cơ sở dữ liệu.", "info")
+        flash(f"Đã gỡ lời nhắn #{entry_id} khỏi bảng lưu bút.", "info")
 
     return redirect(url_for("admin_database"))
 
 
 # =====================================================================
-# PHÍA ADMIN: ĐỘC QUYỀN QUẢN TRỊ VÀ XÓA BẢN GHI (BẢO MẬT MÃ PIN)
+# PHÍA ADMIN: QUẢN TRỊ BÍ MẬT & ĐỘC QUYỀN XÓA (BẢO VỆ MÃ PIN 8888)
 # =====================================================================
 
 @app.route("/admin/db", methods=["GET", "POST"])
@@ -215,10 +211,8 @@ def admin_database():
     db = get_db()
     schema_info = db.execute("PRAGMA table_info(entries)").fetchall()
 
-    # Tính tổng số bản ghi thực tế trong cơ sở dữ liệu
     total_count = db.execute("SELECT COUNT(*) FROM entries").fetchone()[0]
 
-    # Tìm kiếm theo ID nếu có tham số search_id
     search_id = request.args.get("search_id", "").strip()
     if search_id and search_id.isdigit():
         entries = db.execute(
@@ -243,10 +237,7 @@ def admin_database():
 
 @app.route("/admin/delete/<int:entry_id>", methods=["POST"])
 def admin_delete_entry(entry_id: int):
-    """
-    Route XÓA ĐỘC QUYỀN của Admin:
-    Chỉ Admin sau khi mở khóa mới thực thi được.
-    """
+    """Route XÓA ĐỘC QUYỀN của Admin."""
     if not session.get("admin_authenticated"):
         flash("⛔ Bạn cần đăng nhập mã PIN để thực hiện thao tác xóa!", "warning")
         return redirect(url_for("admin_database"))
@@ -268,9 +259,9 @@ def admin_delete_entry(entry_id: int):
 if __name__ == "__main__":
     init_db()
     print("=" * 65)
-    print("💖 SỔ LƯU BÚT FLASK (ADMIN-ONLY DELETE PROTECTION)")
+    print("📌 SỔ LƯU BÚT BẢNG GHIM GỖ BẦN (CORKBOARD EDITION)")
     print(f"📁 Tệp Database:          {DATABASE_PATH}")
-    print("🌐 Trang chủ công khai:    http://127.0.0.1:5000")
+    print("🌐 Bảng ghim công khai:    http://127.0.0.1:5000")
     print("🔐 Quản trị DB Bí mật:    http://127.0.0.1:5000/admin/db (Mã PIN: 8888)")
     print("=" * 65)
     app.run(debug=True, host="127.0.0.1", port=5000)

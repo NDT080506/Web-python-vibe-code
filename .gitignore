@@ -14,3 +14,4 @@ env/
 # Bỏ qua tệp cấu hình của IDE
 .vscode/
 .idea/
+*.lnk

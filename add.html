@@ -3,171 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viết Lời Nhắn Mới ✨ Sổ Lưu Bút Rực Rỡ</title>
-    <!-- Google Font Plus Jakarta Sans cực kỳ hiện đại -->
+    <title>Ghim Lời Nhắn Mới 📌 Sổ Lưu Bút</title>
+    <!-- Font chữ viết tay Patrick Hand & Font Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            /* Bảng màu Neon Sunset & Dopamine rực rỡ (TUYỆT ĐỐI KHÔNG CÓ MÀU XANH) */
-            --pink-neon: #ff007a;
-            --orange-sunset: #ff5e36;
-            --purple-electric: #7928ca;
-            --yellow-gold: #f5af19;
-            --rose-ruby: #e11d48;
-            --sunset-gradient: linear-gradient(135deg, #ff007a 0%, #ff5e36 45%, #7928ca 100%);
-            --btn-gradient: linear-gradient(135deg, #ff007a 0%, #ff5e36 50%, #f5af19 100%);
-            --btn-hover: linear-gradient(135deg, #e11d48 0%, #ff007a 50%, #7928ca 100%);
-        }
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Nền Sunset Aura siêu rực rỡ và lộng lẫy */
         body {
-            background-color: #fff1f5;
+            background-color: #f7ebe1;
             background-image: 
-                radial-gradient(at 0% 0%, rgba(255, 0, 122, 0.28) 0px, transparent 55%),
-                radial-gradient(at 100% 0%, rgba(121, 40, 202, 0.28) 0px, transparent 55%),
-                radial-gradient(at 100% 100%, rgba(255, 94, 54, 0.3) 0px, transparent 55%),
-                radial-gradient(at 0% 100%, rgba(245, 175, 25, 0.25) 0px, transparent 55%),
-                radial-gradient(at 50% 50%, rgba(255, 0, 122, 0.15) 0px, transparent 65%);
-            background-attachment: fixed;
+                radial-gradient(at 10% 20%, rgba(255, 237, 213, 0.6) 0px, transparent 50%),
+                radial-gradient(at 90% 80%, rgba(254, 215, 170, 0.4) 0px, transparent 50%),
+                linear-gradient(180deg, #fbf2ea 0%, #f3e2d3 100%);
             min-height: 100vh;
-            color: #0f172a;
+            color: #3e2723;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 32px 16px;
+            padding: 28px 16px;
         }
 
-        /* Thẻ Form Candy Glassmorphism cao cấp */
-        .form-card {
+        /* Tờ giấy note lớn đặt trên bàn để viết */
+        .notepad-card {
             width: 100%;
-            max-width: 640px;
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border-radius: 32px;
-            border: 2px solid rgba(255, 255, 255, 0.95);
+            max-width: 580px;
+            background: #fffde7;
+            border-radius: 8px;
+            padding: 38px 34px 34px 34px;
             box-shadow: 
-                0 30px 60px -15px rgba(255, 0, 122, 0.25),
-                0 15px 30px -10px rgba(255, 94, 54, 0.2),
-                inset 0 1px 2px rgba(255, 255, 255, 0.9);
-            padding: 40px 36px;
+                0 25px 50px -12px rgba(62, 39, 35, 0.35),
+                0 10px 20px -5px rgba(62, 39, 35, 0.2),
+                inset 0 1px 2px rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.08);
             position: relative;
-            overflow: hidden;
-            animation: cardAppear 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: rotate(-0.8deg);
         }
 
-        @keyframes cardAppear {
-            from { opacity: 0; transform: translateY(20px) scale(0.97); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+        /* Đinh ghim 3D đỏ cắm trên đầu tờ note */
+        .push-pin-top {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #ffffff 0%, #e53935 55%, #5c1111 100%);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.45);
+            z-index: 10;
         }
 
-        /* Dải viền phát sáng 5 màu trên đỉnh */
-        .form-card::before {
+        .push-pin-top::after {
             content: "";
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 3px;
+            left: 4px;
+            width: 6px;
             height: 6px;
-            background: linear-gradient(90deg, #ff007a, #ff5e36, #f5af19, #e11d48, #7928ca, #ff007a);
-            background-size: 200% auto;
-            animation: rainbowFlow 4s linear infinite;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 50%;
         }
 
-        @keyframes rainbowFlow {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 200% 50%; }
+        /* Miếng băng dính washi tape trang trí góc trái */
+        .washi-tape-decor {
+            position: absolute;
+            top: -10px;
+            left: 18px;
+            width: 70px;
+            height: 20px;
+            background: rgba(255, 183, 77, 0.55);
+            transform: rotate(-8deg);
+            opacity: 0.85;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-left: 3px dashed rgba(0,0,0,0.15);
+            border-right: 3px dashed rgba(0,0,0,0.15);
         }
 
-        /* Nút quay lại trang chủ */
-        .back-nav {
+        .back-link {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            color: #71717a;
+            gap: 6px;
+            color: #8d6e63;
             text-decoration: none;
             font-size: 0.9rem;
             font-weight: 700;
-            margin-bottom: 20px;
-            padding: 8px 14px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.8);
-            border: 1px solid #fecdd3;
-            transition: all 0.25s ease;
+            margin-bottom: 16px;
+            transition: all 0.2s;
         }
 
-        .back-nav:hover {
-            color: var(--pink-neon);
-            border-color: var(--pink-neon);
+        .back-link:hover {
+            color: #d84315;
             transform: translateX(-3px);
-            background: #fff1f2;
         }
 
-        /* Tiêu đề rực lửa */
-        .header-box {
-            margin-bottom: 26px;
-        }
-
-        .header-box h1 {
-            font-size: 1.85rem;
-            font-weight: 900;
-            letter-spacing: -0.03em;
-            background: var(--sunset-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .header-box p {
-            color: #52525b;
-            font-size: 0.96rem;
-            font-weight: 500;
-        }
-
-        /* Thông báo lỗi */
-        .alert-error {
-            background: linear-gradient(135deg, #fff1f2, #ffe4e6);
-            border: 2px solid #fca5a5;
-            color: #b91c1c;
-            padding: 14px 18px;
-            border-radius: 16px;
-            font-size: 0.94rem;
+        .note-title {
+            font-family: 'Patrick Hand', cursive;
+            font-size: 2.2rem;
             font-weight: 700;
-            margin-bottom: 24px;
+            color: #3e2723;
+            line-height: 1.1;
+            margin-bottom: 6px;
+        }
+
+        .note-sub {
+            color: #795548;
+            font-size: 0.92rem;
+            margin-bottom: 22px;
+            font-style: italic;
+        }
+
+        .alert-error {
+            background: #ffebee;
+            border: 2px dashed #ef9a9a;
+            color: #c62828;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            font-weight: 700;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.15);
+            gap: 8px;
         }
 
-        /* Gợi ý tâm trạng (Vibe Quick Tags) */
-        .vibe-section {
-            margin-bottom: 22px;
+        /* Các nút chọn cảm xúc nhanh */
+        .vibe-box {
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.03);
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: 1px dashed rgba(0, 0, 0, 0.1);
         }
 
-        .vibe-title {
-            font-size: 0.85rem;
+        .vibe-label {
+            font-size: 0.82rem;
             font-weight: 800;
+            color: #5d4037;
+            margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            color: #9f1239;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
         }
 
         .vibe-tags {
@@ -178,187 +160,164 @@
 
         .vibe-btn {
             background: #ffffff;
-            border: 1.5px solid #fecdd3;
-            color: #4b5563;
-            padding: 7px 14px;
-            border-radius: 12px;
-            font-size: 0.85rem;
+            border: 1px solid #d7ccc8;
+            color: #4e342e;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.82rem;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
+            transition: all 0.2s ease;
         }
 
         .vibe-btn:hover {
-            transform: translateY(-2px) scale(1.04);
-            border-color: var(--pink-neon);
-            color: var(--pink-neon);
-            box-shadow: 0 6px 14px rgba(255, 0, 122, 0.25);
-            background: #fff5f7;
+            background: #efebe9;
+            border-color: #a1887f;
+            transform: scale(1.04);
         }
 
-        /* Form nhóm input */
         .form-group {
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         label {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.96rem;
-            font-weight: 800;
-            color: #1e1b4b;
-            margin-bottom: 10px;
+            font-family: 'Patrick Hand', cursive;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #3e2723;
+            margin-bottom: 6px;
         }
 
-        .counter-badge {
+        .counter {
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 0.78rem;
-            font-weight: 800;
-            color: #be185d;
-            background: #fdf2f8;
-            padding: 3px 10px;
-            border-radius: 8px;
-            border: 1px solid #fbcfe8;
+            color: #8d6e63;
+            font-weight: 600;
         }
 
         input[type="text"],
         textarea {
             width: 100%;
             background: #ffffff;
-            border: 2px solid #ffd1dc;
-            border-radius: 18px;
-            padding: 15px 20px;
-            font-size: 1.02rem;
-            color: #1e1b4b;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-family: 'Patrick Hand', cursive;
+            font-size: 1.3rem;
+            color: #271d18;
             outline: none;
             transition: all 0.25s ease;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
         input[type="text"]:focus,
         textarea:focus {
             background: #ffffff;
-            border-color: var(--pink-neon);
-            box-shadow: 0 0 0 5px rgba(255, 0, 122, 0.22);
-            transform: translateY(-1px);
+            border-color: #d84315;
+            box-shadow: 0 0 0 3px rgba(216, 67, 21, 0.18);
         }
 
         textarea {
             resize: vertical;
-            min-height: 150px;
-            line-height: 1.65;
+            min-height: 140px;
+            line-height: 1.45;
         }
 
-        /* Nút hành động Submit đa sắc */
         .actions {
             display: flex;
-            gap: 14px;
-            margin-top: 32px;
+            gap: 12px;
+            margin-top: 26px;
         }
 
-        .btn-submit {
+        .btn-pin-submit {
             flex: 2;
-            background: var(--btn-gradient);
-            background-size: 150% auto;
+            background: #d84315;
             color: #ffffff;
-            border: none;
-            padding: 16px 28px;
-            border-radius: 18px;
-            font-size: 1.08rem;
-            font-weight: 900;
+            border: 2px solid #bf360c;
+            padding: 14px 24px;
+            border-radius: 50px;
+            font-size: 1.15rem;
+            font-family: 'Patrick Hand', cursive;
+            font-weight: 700;
             cursor: pointer;
+            box-shadow: 0 6px 16px rgba(216, 67, 21, 0.35);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            box-shadow: 0 14px 28px -4px rgba(255, 0, 122, 0.45);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+            gap: 8px;
         }
 
-        .btn-submit:hover {
-            background-position: right center;
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 20px 36px -4px rgba(255, 0, 122, 0.6);
+        .btn-pin-submit:hover {
+            background: #bf360c;
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 10px 22px rgba(216, 67, 21, 0.45);
         }
 
         .btn-cancel {
             flex: 1;
-            background: #f4f4f5;
-            color: #3f3f46;
+            background: #efebe9;
+            color: #5d4037;
             text-decoration: none;
-            padding: 16px 20px;
-            border-radius: 18px;
-            font-size: 1rem;
-            font-weight: 800;
+            padding: 14px 18px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 700;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s ease;
-            border: 1.5px solid #e4e4e7;
+            border: 1px solid #d7ccc8;
+            transition: all 0.2s;
         }
 
         .btn-cancel:hover {
-            background: #e4e4e7;
-            color: #18181b;
+            background: #d7ccc8;
+            color: #271d18;
         }
     </style>
 </head>
 <body>
-    <div class="form-card">
-        <a href="{{ url_for('index') }}" class="back-nav">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="19" y1="12" x2="5" y2="12"></line>
-                <polyline points="12 19 5 12 12 5"></polyline>
-            </svg>
-            <span>Quay lại Sổ Lưu Bút</span>
+    <div class="notepad-card">
+        <!-- Đinh ghim và băng dính washi tape -->
+        <div class="push-pin-top"></div>
+        <div class="washi-tape-decor"></div>
+
+        <a href="{{ url_for('index') }}" class="back-link">
+            <span>← Quay lại bảng ghim</span>
         </a>
 
-        <div class="header-box">
-            <h1>
-                <span>Gửi Gắm Kỷ Niệm</span>
-                <span>✍️✨</span>
-            </h1>
-            <p>Viết nên những dòng tâm sự, lời chúc rực rỡ và chân thành nhất.</p>
-        </div>
+        <h1 class="note-title">Viết Tờ Note Kỷ Niệm 📌</h1>
+        <p class="note-sub">Những dòng chữ này sẽ được ghim trang trọng lên bảng gỗ bần.</p>
 
-        {# Hiển thị lỗi nếu validate thất bại #}
         {% if error %}
             <div class="alert-error">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="12" y1="8" x2="12" y2="12"></line>
-                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                </svg>
-                <span>{{ error }}</span>
+                <span>⚠️ {{ error }}</span>
             </div>
         {% endif %}
 
-        <!-- Chọn Vibe Nhanh Để Tự Điền -->
-        <div class="vibe-section">
-            <div class="vibe-title">✨ Chọn cảm xúc nhanh (Gợi ý lời chúc):</div>
+        <!-- Chọn cảm xúc nhanh -->
+        <div class="vibe-box">
+            <div class="vibe-label">💡 Gợi ý lời chúc nhanh:</div>
             <div class="vibe-tags">
-                <button type="button" class="vibe-btn" onclick="insertVibe('💖 Chúc bạn luôn vui vẻ, hạnh phúc và tràn đầy năng lượng tích cực!')">💖 Yêu thương</button>
-                <button type="button" class="vibe-btn" onclick="insertVibe('🌟 Chúc dự án ngày càng phát triển rực rỡ và gặt hái nhiều thành công!')">🌟 Thành công</button>
-                <button type="button" class="vibe-btn" onclick="insertVibe('🎉 Khai trương hồng phát! Chúc mọi sự hanh thông và thuận buồm xuôi gió!')">🎉 Chúc mừng</button>
-                <button type="button" class="vibe-btn" onclick="insertVibe('☕ Ghé thăm sổ lưu bút để lại một kỷ niệm thật đẹp và đáng nhớ!')">☕ Kỷ niệm</button>
+                <button type="button" class="vibe-btn" onclick="insertQuickVibe('💖 Chúc bạn luôn vui vẻ, hạnh phúc và tràn đầy năng lượng tích cực!')">💖 Yêu thương</button>
+                <button type="button" class="vibe-btn" onclick="insertQuickVibe('🌟 Chúc dự án ngày càng phát triển rực rỡ và thành công vang dội!')">🌟 Thành công</button>
+                <button type="button" class="vibe-btn" onclick="insertQuickVibe('☕ Ghé thăm bảng lưu bút để lại một kỷ niệm thật đẹp và đáng nhớ!')">☕ Kỷ niệm</button>
             </div>
         </div>
 
         <form action="{{ url_for('add_entry') }}" method="POST">
             <div class="form-group">
                 <label for="name">
-                    <span>👤 Tên của bạn hoặc Biệt danh *</span>
+                    <span>Tên của bạn hoặc Nickname *</span>
                 </label>
                 <input 
                     type="text" 
                     id="name" 
                     name="name" 
-                    placeholder="Ví dụ: Hoàng Long, Quỳnh Anh, Thảo Vy..." 
+                    placeholder="Ví dụ: Hoàng Long, Minh Thư..." 
                     value="{{ name|default('') }}"
                     autocomplete="off"
                     required
@@ -367,34 +326,33 @@
 
             <div class="form-group">
                 <label for="message">
-                    <span>💌 Nội dung lời nhắn *</span>
-                    <span id="charCount" class="counter-badge">0 ký tự</span>
+                    <span>Nội dung lời nhắn *</span>
+                    <span id="charCount" class="counter">0 ký tự</span>
                 </label>
                 <textarea 
                     id="message" 
                     name="message" 
-                    placeholder="Hãy viết những dòng chữ chân thành, lời chúc tốt đẹp hoặc câu chuyện nhỏ của bạn vào đây nhé..."
+                    placeholder="Viết đôi dòng gửi gắm tâm tình, lời chúc hoặc kỷ niệm của bạn vào đây..."
                     required
-                    oninput="updateCounter(this)"
+                    oninput="updateCount(this)"
                 >{{ message|default('') }}</textarea>
             </div>
 
             <div class="actions">
                 <a href="{{ url_for('index') }}" class="btn-cancel">Hủy</a>
-                <button type="submit" class="btn-submit">
-                    <span>🚀 Đăng Lời Nhắn Ngay</span>
+                <button type="submit" class="btn-pin-submit">
+                    <span>📌 Ghim Lên Bảng Kỷ Niệm</span>
                 </button>
             </div>
         </form>
     </div>
 
     <script>
-        function updateCounter(el) {
-            const counter = document.getElementById('charCount');
-            counter.textContent = `${el.value.length} ký tự`;
+        function updateCount(el) {
+            document.getElementById('charCount').textContent = `${el.value.length} ký tự`;
         }
 
-        function insertVibe(text) {
+        function insertQuickVibe(text) {
             const msgArea = document.getElementById('message');
             if (msgArea.value.trim() === '') {
                 msgArea.value = text;
@@ -402,12 +360,12 @@
                 msgArea.value += '\n' + text;
             }
             msgArea.focus();
-            updateCounter(msgArea);
+            updateCount(msgArea);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             const textarea = document.getElementById('message');
-            if (textarea) updateCounter(textarea);
+            if (textarea) updateCount(textarea);
         });
     </script>
 </body>
